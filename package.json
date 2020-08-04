@@ -1,0 +1,33 @@
+{
+  "name": "fastify-transform-body-plugin",
+  "version": "1.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": {
+    "name": "Edward Ruchevits",
+    "email": "ruchevits@gmail.com",
+    "url": "https://ruchevits.com"
+  },
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpileOnly src/test.ts",
+    "mjs": "tsc -d && mv dist/index.js dist/index.mjs",
+    "cjs": "tsc -m commonjs",
+    "build": "npm run mjs && npm run cjs"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.8",
+    "fastify": "^2.14.1",
+    "fastify-plugin": "^1.6.1",
+    "reflect-metadata": "^0.1.13",
+    "ts-node-dev": "^1.0.0-pre.47",
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.3"
+  },
+  "files": [
+    "dist"
+  ]
+}
