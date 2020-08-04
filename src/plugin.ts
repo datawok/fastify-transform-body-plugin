@@ -3,7 +3,8 @@ import * as http from 'http';
 import * as http2 from 'http2';
 import * as https from 'https';
 
-import { CaseFormat, mapper } from './mapper';
+import { MapperOptions } from '../dist/mapper';
+import { CaseFormat, Formatter, mapper } from './mapper';
 
 export type HttpServer = http.Server | https.Server | http2.Http2Server | http2.Http2SecureServer;
 export type HttpRequest = http.IncomingMessage | http2.Http2ServerRequest;
@@ -13,6 +14,7 @@ export interface TransformBodyOptions {
   internalCaseFormat: CaseFormat;
   validateRequestBody: boolean;
   caseFormatResolver(request: any): any;
+  formatters?: Formatter[];
 }
 
 export interface FastifyTransformBodyOptions<
@@ -31,7 +33,7 @@ export async function fastifyTransformBody<
   fastify: FastifyInstance<HttpServer, HttpRequest, HttpResponse>,
   options: FastifyTransformBodyOptions<HttpServer, HttpRequest, HttpResponse>
 ): Promise<void> {
-  const { internalCaseFormat, validateRequestBody, caseFormatResolver } = options.transformBody;
+  const { internalCaseFormat, validateRequestBody, caseFormatResolver, formatters } = options.transformBody;
   async function preHandler(request, reply) {
     if (!request.body) {
       return;
@@ -75,10 +77,17 @@ export async function fastifyTransformBody<
     if (!responseBodyCaseFormat) {
       return;
     }
-    const result = mapper(payload, {
+
+    const mapperOptions: MapperOptions = {
       fromCase: internalBodyCaseFormat,
       toCase: responseBodyCaseFormat,
-    });
+    };
+
+    if (Array.isArray(formatters)) {
+      mapperOptions.formatters = formatters;
+    }
+
+    const result = mapper(payload, mapperOptions);
     return result.value;
   }
   fastify.addHook('preHandler', preHandler);

@@ -15,8 +15,8 @@ export enum ErrorType {
   UnparseableValue = 'UNPARSEABLE_VALUE',
 }
 
-type MatchingHandler = (input: any) => boolean;
-type FormattingHandler = (input: any) => any;
+export type MatchingHandler = (input: any) => boolean;
+export type FormattingHandler = (input: any) => any;
 
 export interface MapperOptions {
   toCase: CaseFormat;
@@ -26,13 +26,13 @@ export interface MapperOptions {
   errors?: MapperError[];
 }
 
-interface Formatter {
+export interface Formatter {
   name: string;
   matched: MatchingHandler;
   handler: FormattingHandler;
 }
 
-interface MapperError {
+export interface MapperError {
   type: ErrorType;
   path: string;
   value?: any;
