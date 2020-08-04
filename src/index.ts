@@ -1,2 +1,2 @@
 export { TransformBodyOptions, FastifyTransformBodyOptions, fastifyTransformBody } from './plugin';
-export { CaseFormat } from './mapper';
+export { CaseFormat, mapper } from './mapper';
